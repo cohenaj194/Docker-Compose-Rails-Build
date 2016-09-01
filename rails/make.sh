@@ -2,10 +2,10 @@
 
 #makes rails app if not working
 full_make() {
-	docker-compose run web rails new . --force --database=postgresql --skip-bundle
-	sudo chown -R $USER:$USER .
-	docker-compose build
-	echo "development: &default
+  docker-compose run web rails new . --force --database=postgresql --skip-bundle
+  sudo chown -R $USER:$USER .
+  docker-compose build
+  echo "development: &default
   adapter: postgresql
   encoding: unicode
   database: postgres
@@ -54,27 +54,27 @@ fi
 
 # creates a Gemfile.lock if none exists
 if [ -z "$(ls . | grep -w 'Gemfile.lock' | tr -d '\012')" ]; then
-	touch Gemfile.lock
+  touch Gemfile.lock
 fi
 
 #checks that there is a config/database.yml file 
 if [ -d "config" ]; then
-	if [ -f "config/database.yml"]; then
-		#if we have one then all we have to do is modify our files and run docker compose
-		sudo chown -R $USER:$USER .
-		docker-compose up -d
-		sleep 5
+  if [ -f "config/database.yml"]; then
+    #if we have one then all we have to do is modify our files and run docker compose
+    sudo chown -R $USER:$USER .
+    docker-compose up -d
+    sleep 5
 
-		#if the web container fails then config/database.yml is set up incorrectly 
-		#so well remake the project with a fresh config/database.yml
-		if [ -z "$( docker ps | grep 'rails_web' | tr -d '\012')"]; then
-			full_make
-		fi
-		echo "up and running!!!"
-	fi
+    #if the web container fails then config/database.yml is set up incorrectly 
+    #so well remake the project with a fresh config/database.yml
+    if [ -z "$( docker ps | grep 'rails_web' | tr -d '\012')"]; then
+      full_make
+    fi
+    echo "up and running!!!"
+  fi
 else
-	#if the project was empty from the start then well make everything from scratch
-	full_make
+  #if the project was empty from the start then well make everything from scratch
+  full_make
 fi
 
 
