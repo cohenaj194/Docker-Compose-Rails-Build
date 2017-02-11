@@ -67,7 +67,7 @@ if [ -d "config" ]; then
 
     #if the web container fails then config/database.yml is set up incorrectly 
     #so well remake the project with a fresh config/database.yml
-    if [ -z "$( docker ps | grep 'rails_web' | tr -d '\012')"]; then
+    if [ -z "$( docker ps | grep 'rails_web' | tr -d '\012')" ]; then
       full_make
     fi
     echo "up and running!!!"
